@@ -9,4 +9,4 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(EXTRA_COMPONENT_DIRS libs mfl)
 
-project(smartscreen)
+project(roberto-firmware)

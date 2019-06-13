@@ -2,14 +2,13 @@
 
 #include <lwip/ip4_addr.h>
 #include <string>
-#include <mfl/Display.hpp>
 
 namespace smartscreen {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
 struct MainView {
-    MainView(mfl::Display& display);
+    MainView();
 
     esp_err_t setMessage(const std::string& message);
 
@@ -23,7 +22,6 @@ private:
     ip4_addr ip_;
     std::string message_;
     std::string wifiStatus_;
-    mfl::Display &display_;
 };
 
 // ---------------------------------------------------------------------------------------------------------------------

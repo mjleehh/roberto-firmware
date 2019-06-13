@@ -1,45 +1,57 @@
-menu "smartscreen"
+menu "roberto"
 
-    config SMARTSCREEN_WIFI_SSID
+    config ROBERTO_WIFI_SSID
         string "ssid"
         help
             the wifi network to be used by the smartscreen
 
-    config SMARTSCREEN_WIFI_PASSWORD
+    config ROBERTO_WIFI_PASSWORD
         string "wifi password"
         help
             the wifi password to be used by the smartscreen
 
-    config SMARTSCREEN_DISPLAY_CLOCK_PIN
+    config ROBERTO_DISPLAY_CLOCK_PIN
         int "display clock pin"
+        default 18
+        help
+            SPI clock pin for the display controller
+
+    config ROBERTO_DISPLAY_DATA_PIN
+        int "display data pin"
+        default 23
+        help
+            SPI data pin for the display controller
+
+    config ROBERTO_DISPLAY_DEVICE_SELECT_PIN
+        int "display device select pin"
         default 15
         help
-            I2C clock pin for the display controller
+            SPI device select pin for the display controller
 
-    config SMARTSCREEN_DISPLAY_DATA_PIN
-        int "display data pin"
-        default 4
+    config ROBERTO_DISPLAY_COMMAND_PIN
+        int "display command pin"
+        default 2
         help
-            I2C data pin for the display controller
+            command pin for the display controller
 
-    config SMARTSCREEN_DISPLAY_RESET_PIN
+    config ROBERTO_DISPLAY_RESET_PIN
         int "display reset pin"
-        default 16
+        default 4
         help
             reset pin for the display controller
 
-    config SMARTSCREEN_DEVICE_ID
+    config ROBERTO_ID
         string "device id"
         default "smartscreen-1"
         help
             the id of this smartscren
 
-    config SMARTSCREEN_HOME_ADDRESS
+    config ROBERTO_HOME_ADDRESS
         string "home address"
         help
             the address of this smartscreen's home backend
 
-    config SMARTSCREEN_HOSTNAME
+    config ROBERTO_NAME
         string "host name"
         default "smartscreen"
         help
