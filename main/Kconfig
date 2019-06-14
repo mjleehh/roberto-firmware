@@ -20,25 +20,31 @@ menu "roberto"
         int "display data pin"
         default 23
         help
-            SPI data pin for the display controller
+            SPI data pin (SDA) for the display controller
+
+    config ROBERTO_DISPLAY_READ_DATA_PIN
+        int "display read data pin"
+        default 23
+        help
+            SPI read data pin (SDO) for the display controller
 
     config ROBERTO_DISPLAY_DEVICE_SELECT_PIN
         int "display device select pin"
         default 15
         help
-            SPI device select pin for the display controller
+            SPI device select (CS) pin for the display controller
 
     config ROBERTO_DISPLAY_COMMAND_PIN
         int "display command pin"
         default 2
         help
-            command pin for the display controller
+            command pin (RS) for the display controller
 
     config ROBERTO_DISPLAY_RESET_PIN
         int "display reset pin"
         default 4
         help
-            reset pin for the display controller
+            reset pin (RST) for the display controller
 
     config ROBERTO_ID
         string "device id"
