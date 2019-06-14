@@ -41,13 +41,15 @@ extern "C" void app_main() {
     ESP_ERROR_CHECK(nvs_flash_init());
     tcpip_adapter_init();
 
-    ColorDisplay display(
-            ColorDisplay::ControllerType::st7735,
-            pinFromInt<CONFIG_ROBERTO_DISPLAY_CLOCK_PIN>(),
-            pinFromInt<CONFIG_ROBERTO_DISPLAY_DATA_PIN>(),
-            pinFromInt<CONFIG_ROBERTO_DISPLAY_DEVICE_SELECT_PIN>(),
-            pinFromInt<CONFIG_ROBERTO_DISPLAY_COMMAND_PIN>(),
-            pinFromInt<CONFIG_ROBERTO_DISPLAY_RESET_PIN>());
+    color_display::ColorDisplayConfig displayConfig =  {
+            .clockPin      = pinFromInt<CONFIG_ROBERTO_DISPLAY_CLOCK_PIN>(),
+            .dataPin       = pinFromInt<CONFIG_ROBERTO_DISPLAY_DATA_PIN>(),
+            .chipSelectPin = pinFromInt<CONFIG_ROBERTO_DISPLAY_DEVICE_SELECT_PIN>(),
+            .commandPin    = pinFromInt<CONFIG_ROBERTO_DISPLAY_COMMAND_PIN>(),
+            .resetPin      = pinFromInt<CONFIG_ROBERTO_DISPLAY_RESET_PIN>(),
+    };
+
+    ColorDisplay display(displayConfig);
     esp_register_freertos_tick_hook(lv_tick_task);
 
     Wifi wifi(CONFIG_ROBERTO_NAME, CONFIG_ROBERTO_WIFI_SSID, CONFIG_ROBERTO_WIFI_PASSWORD);
