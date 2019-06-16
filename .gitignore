@@ -5,3 +5,4 @@ build
 *.old
 *.bak
 notes.txt
+*.code-workspace
