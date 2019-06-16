@@ -3,18 +3,18 @@
 #include <lwip/ip4_addr.h>
 #include <string>
 
-namespace smartscreen {
+namespace roberto {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
 struct MainView {
     MainView();
 
-    esp_err_t setMessage(const std::string& message);
+    esp_err_t setMessage(const std::string &message);
 
-    esp_err_t setWifiStatus(const std::string& status);
+    esp_err_t setWifiStatus(const std::string &status);
 
-    esp_err_t setIp(const ip4_addr& ip);
+    esp_err_t setIp(const ip4_addr &ip);
 
 private:
     esp_err_t draw();
@@ -26,4 +26,4 @@ private:
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-} // namespace smartscreen
+}

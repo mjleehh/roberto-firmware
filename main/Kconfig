@@ -63,4 +63,15 @@ menu "roberto"
         help
             the mDNS name of this device
 
+    config ROBERTO_AP_PASSWORD
+        string "access point password"
+        default "roberto123"
+        help
+            roberto access point password for direct mode
+
+    config ROBERTO_WAIT_FOR_DEBUGGER
+        bool "wait for debugger"
+        default false
+        help
+            put a wait loop at the beginning of the main function for debuggers
 endmenu

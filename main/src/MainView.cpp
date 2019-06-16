@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-namespace smartscreen {
+namespace roberto {
 
 namespace {
 
@@ -65,5 +65,4 @@ esp_err_t MainView::setWifiStatus(const std::string& status) {
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-} // smartscreen
-
+}

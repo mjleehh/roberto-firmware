@@ -7,6 +7,7 @@ set(COMPONENT_REQUIRES
     mfl_http_client
     mfl_http
     mfl_wifi
+    mfl_access_point
     mfl_esp_httpd
     mfl_color_display
     tcp_transport
