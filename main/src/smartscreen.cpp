@@ -33,9 +33,9 @@ constexpr gpio_num_t pinFromInt() {
 using namespace mfl;
 using namespace nlohmann;
 
-void IRAM_ATTR lv_tick_task() {
-    lv_tick_inc(portTICK_RATE_MS);
-}
+//void IRAM_ATTR lv_tick_task() {
+//    lv_tick_inc(portTICK_RATE_MS);
+//}
 
 extern "C" void app_main() {
     ESP_ERROR_CHECK(nvs_flash_init());
@@ -50,31 +50,52 @@ extern "C" void app_main() {
     };
 
     ColorDisplay display(displayConfig);
-    esp_register_freertos_tick_hook(lv_tick_task);
+//    esp_register_freertos_tick_hook(lv_tick_task);
 
     Wifi wifi(CONFIG_ROBERTO_NAME, CONFIG_ROBERTO_WIFI_SSID, CONFIG_ROBERTO_WIFI_PASSWORD);
     httpd::Router router;
     EspHttpd app(router, 80);
+
+    ESP_LOGI(tag, "CALLING FILL");
+
+    vTaskDelay(500 / portTICK_PERIOD_MS);
+
+    const int boardSize = 14;
+    const int border = 4;
+    lv_color_t* chess = new lv_color_t[boardSize * boardSize];
+    for (int i = 0; i < boardSize; ++i) {
+        for (int j = 0; j < boardSize; ++j) {
+            if (i < border) {
+                chess[i * boardSize + j] = LV_COLOR_MAKE(255, 0, 0);
+            } else if (i > boardSize - border) {
+                chess[i * boardSize + j] = LV_COLOR_MAKE(255, 255, 0);
+            } else if (j < border) {
+                chess[i * boardSize + j] = LV_COLOR_MAKE(164, 66, 244);
+            } else if (j > boardSize - border) {
+                chess[i * boardSize + j] = LV_COLOR_MAKE(66, 244, 238);
+            } else {
+                chess[i * boardSize + j] = (i + j) % 2 == 0
+                                           ? LV_COLOR_MAKE(0, 0, 0)
+                                           : LV_COLOR_MAKE(255, 255, 255);
+            }
+        }
+    }
+
+    display.fill(0, 0, 127, 159, LV_COLOR_MAKE(0, 0, 52));
+    display.fill(5 ,5, 20, 20, LV_COLOR_MAKE(128, 0, 0));
+    display.fill(20,20,40, 40, lv_color_t{.red = 0x0f});
+    display.fill(0, 0, 5, 8, lv_color_t{.blue = 0x04});
+
+    display.flush(3, 50, 15, 62, chess);
+
+    ESP_LOGI(tag, "CALLED FILL");
+
 //    smartscreen::MainView mainView(display);
 
 //    mainView.setMessage("hello bob");
 //    mainView.setWifiStatus("-");
 
     //
-
-    lv_obj_t * page = lv_page_create(NULL, NULL);
-    lv_scr_load(page);
-
-    /*Create Label on the currently active screen*/
-    lv_obj_t * label1 =  lv_label_create(lv_scr_act(), NULL);
-
-    /*Modify the Label's text*/
-    lv_label_set_text(label1, "Hello world!");
-
-    /* Align the Label to the center
-     * NULL means align on parent (which is the screen now)
-     * 0, 0 at the end means an x, y offset after alignment*/
-    lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
 
     /*
     wifi.start(
@@ -115,6 +136,8 @@ extern "C" void app_main() {
      */
 
     for (;;) {
-        vTaskDelay(100);
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+//        lv_tick_inc(10);
+//        lv_task_handler();
     }
 }
