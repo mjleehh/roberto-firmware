@@ -46,6 +46,12 @@ menu "roberto"
         help
             reset pin (RST) for the display controller
 
+    config ROBERTO_DISPLAY_BACKLIGHT_PIN
+        int "display backlight pin"
+        default -1
+        help
+            backlight control pin
+
     config ROBERTO_ID
         string "device id"
         default "smartscreen-1"

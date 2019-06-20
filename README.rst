@@ -23,9 +23,10 @@ LCD
 ---
 
 Chip: ILI9341
-- clock SLC:      19
+- clock SCL:      19
 - data write SDA: 23
 - data read SDO:  25
 - chip select CS: 22
 - command RS:     21
 - reset RST:      18
+- backlight:      5

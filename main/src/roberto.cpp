@@ -22,6 +22,8 @@
 #include <esp_freertos_hooks.h>
 #include <mfl/color_display/LvglAdapter.hpp>
 #include <mfl/AccessPoint.hpp>
+#include <esp_spiffs.h>
+#include <fstream>
 
 const std::string HOME_ADDRESS = "http://" CONFIG_ROBERTO_HOME_ADDRESS ":3001/api/" CONFIG_ROBERTO_ID;
 const std::string ROBERTO_AP_NAME = "roberto-" CONFIG_ROBERTO_NAME;
@@ -31,7 +33,7 @@ const char* tag = "roberto";
 using namespace mfl;
 using namespace roberto;
 
-const ProgramMode mode = ProgramMode::factoryDefault;
+const ProgramMode mode = ProgramMode::displayTest;
 
 extern "C" void app_main() {
     waitForDebugger();
@@ -45,13 +47,15 @@ extern "C" void app_main() {
             .chipSelectPin = pinFromInt<CONFIG_ROBERTO_DISPLAY_DEVICE_SELECT_PIN>(),
             .commandPin    = pinFromInt<CONFIG_ROBERTO_DISPLAY_COMMAND_PIN>(),
             .resetPin      = pinFromInt<CONFIG_ROBERTO_DISPLAY_RESET_PIN>(),
+            .backlightPin  = pinFromInt<CONFIG_ROBERTO_DISPLAY_BACKLIGHT_PIN>(),
     };
-    ColorDisplay display(displayConfig);
+
 
     switch (mode) {
         case ProgramMode::normal: {
             httpd::Router router;
             EspHttpd app(router, 80);
+            ColorDisplay display(displayConfig);
             color_display::LvglAdapter lvgl(display);
             Wifi wifi(CONFIG_ROBERTO_NAME, CONFIG_ROBERTO_WIFI_SSID, CONFIG_ROBERTO_WIFI_PASSWORD);
             wifi.start(
@@ -98,6 +102,12 @@ extern "C" void app_main() {
         case ProgramMode::factoryDefault: {
             httpd::Router router;
             EspHttpd app(router, 80);
+            esp_vfs_spiffs_conf_t fsconf = {
+                    .base_path = "/webapp",
+                    .max_files = 3,
+            };
+            ESP_ERROR_CHECK(esp_vfs_spiffs_register(&fsconf));
+
             AccessPoint accessPoint(CONFIG_ROBERTO_NAME, ROBERTO_AP_NAME, CONFIG_ROBERTO_AP_PASSWORD);
             accessPoint.start([&accessPoint, &app, &router]{
                 accessPoint.addService("roberto-direct", mfl::AccessPoint::Protocol::tcp, 80, "foo");
@@ -106,7 +116,9 @@ extern "C" void app_main() {
                     ctx.res.body = nlohmann::json();
                 });
                 router.get("/message", [](mfl::httpd::Context<std::string> &ctx){
-                    ctx.res.body = "hello bob";
+                    std::ifstream t("/webapp/index.html");
+                    ctx.res.body = std::string (std::istreambuf_iterator<char>(t),
+                                                std::istreambuf_iterator<char>());
                 });
                 router.put("/message", [](mfl::httpd::Context<std::string> &ctx){
                     ctx.res.body = "hello charles";
@@ -117,9 +129,12 @@ extern "C" void app_main() {
             }
         }
         case ProgramMode::displayTest: {
+            ColorDisplay display(displayConfig);
+            color_display::LvglAdapter lvgl(display);
             displayTest(display);
             for (;;) {
-                vTaskDelay(1000 / portTICK_PERIOD_MS);
+                ESP_LOGI("foo", "sleeping");
+                vTaskDelay(10000 / portTICK_PERIOD_MS);
             }
         }
         default: {
