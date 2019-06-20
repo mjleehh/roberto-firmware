@@ -5,6 +5,8 @@ namespace roberto {
 // ---------------------------------------------------------------------------------------------------------------------
 
 void displayTest(mfl::ColorDisplay &display) {
+
+
     const int boardSize = 14;
     const int border = 4;
     lv_color_t *chess = new lv_color_t[boardSize * boardSize];
@@ -26,10 +28,18 @@ void displayTest(mfl::ColorDisplay &display) {
         }
     }
 
-    display.fill(0, 0, 127, 159, LV_COLOR_MAKE(0, 0, 52));
+    display.fill(0, 0, 239, 319, LV_COLOR_MAKE(0, 0, 52));
     display.fill(5, 5, 20, 20, LV_COLOR_MAKE(128, 0, 0));
     display.fill(20, 20, 40, 40, lv_color_t{.red = 0x0f});
     display.fill(0, 0, 5, 8, lv_color_t{.blue = 0x04});
+
+    display.fill(0, 0, 239, 0, LV_COLOR_MAKE(0, 255, 0));
+    display.fill(0, 2, 239, 2, LV_COLOR_MAKE(0, 255, 0));
+
+    display.fill(0, 0, 0, 319, LV_COLOR_MAKE(255, 255, 0));
+
+    display.fill(30, 0, 30, 319, LV_COLOR_MAKE(255, 255, 0));
+
 
     display.flush(3, 50, 15, 62, chess);
 }

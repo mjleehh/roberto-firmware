@@ -11,6 +11,10 @@ set(COMPONENT_REQUIRES
     mfl_esp_httpd
     mfl_color_display
     tcp_transport
+    spiffs
     modern_json)
 
 register_component()
+
+spiffs_create_partition_image(webapp ${PROJECT_SOURCE_DIR}/www FLASH_IN_PROJECT)
+
