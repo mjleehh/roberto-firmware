@@ -52,6 +52,12 @@ menu "roberto"
         help
             backlight control pin
 
+    config ROBERTO_DISPLAY_BACKLIGHT_INVERT
+        bool "display backlight invert"
+        default false
+        help
+            If the direction of the backlight pin is inverted (low for on) check this option.
+
     config ROBERTO_ID
         string "device id"
         default "smartscreen-1"
