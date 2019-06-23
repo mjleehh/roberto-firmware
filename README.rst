@@ -30,3 +30,19 @@ Chip: ILI9341
 - command RS:     21
 - reset RST:      18
 - backlight:      5
+
+Ding Dong
+=========
+
+LCD
+---
+BUS: VSPI
+
+Chip: ILI9341
+- clock SCL:      18
+- data write SDA: 23
+- data read SDO:  19
+- chip select CS: 21
+- command RS:     22
+- reset RST:      33
+- backlight:      5
