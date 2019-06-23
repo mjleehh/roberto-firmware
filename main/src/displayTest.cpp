@@ -1,3 +1,4 @@
+#include <esp_log.h>
 #include "displayTest.hpp"
 
 namespace roberto {
@@ -5,11 +6,9 @@ namespace roberto {
 // ---------------------------------------------------------------------------------------------------------------------
 
 void displayTest(mfl::ColorDisplay &display) {
-
-
     const int boardSize = 14;
     const int border = 4;
-    lv_color_t *chess = new lv_color_t[boardSize * boardSize];
+    auto *chess = new lv_color_t[boardSize * boardSize];
     for (int i = 0; i < boardSize; ++i) {
         for (int j = 0; j < boardSize; ++j) {
             if (i < border) {
@@ -28,20 +27,25 @@ void displayTest(mfl::ColorDisplay &display) {
         }
     }
 
-    display.fill(0, 0, 239, 319, LV_COLOR_MAKE(0, 0, 52));
-    display.fill(5, 5, 20, 20, LV_COLOR_MAKE(128, 0, 0));
-    display.fill(20, 20, 40, 40, lv_color_t{.red = 0x0f});
-    display.fill(0, 0, 5, 8, lv_color_t{.blue = 0x04});
+    display.fill(0, 0, 239, 319, LV_COLOR_MAKE(255, 0, 0));
 
-    display.fill(0, 0, 239, 0, LV_COLOR_MAKE(0, 255, 0));
-    display.fill(0, 2, 239, 2, LV_COLOR_MAKE(0, 255, 0));
+    display.fill(50, 50, 100, 100, LV_COLOR_MAKE(0, 0, 255));
 
-    display.fill(0, 0, 0, 319, LV_COLOR_MAKE(255, 255, 0));
-
+    ESP_LOGI(TAG, "drawing bits n pieces");
+    display.fill(10, 0, 11, 319, LV_COLOR_MAKE(255, 255, 0));
     display.fill(30, 0, 30, 319, LV_COLOR_MAKE(255, 255, 0));
 
-
+    ESP_LOGI(TAG, "drawing chess");
     display.flush(3, 50, 15, 62, chess);
+
+    ESP_LOGI(TAG, "drawing dots");
+    const int XRES = 239;
+    const int YRES = 319;
+    for (int x = 0; x < XRES; x += 10) {
+        for (int y = 0; y < YRES; y += 10) {
+            display.fill(x, y, x + 1, y + 1, LV_COLOR_MAKE(0, 255, 0));
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

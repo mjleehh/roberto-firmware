@@ -1,6 +1,3 @@
-set(COMPONENT_SRCDIRS src)
-set(COMPONENT_ADD_INCLUDEDIRS src)
-
 set(COMPONENT_REQUIRES
     nvs_flash
     esp_http_client
@@ -14,7 +11,10 @@ set(COMPONENT_REQUIRES
     spiffs
     modern_json)
 
-register_component()
+idf_component_register(
+        SRC_DIRS src
+        REQUIRES ${COMPONENT_REQUIRES})
 
+target_compile_definitions(${COMPONENT_TARGET} PRIVATE "-D TAG=\"${COMPONENT_NAME}\"")
 spiffs_create_partition_image(webapp ${PROJECT_SOURCE_DIR}/www FLASH_IN_PROJECT)
 

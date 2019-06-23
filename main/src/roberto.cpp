@@ -5,12 +5,12 @@
 #include <mfl/httpd/Router.hpp>
 #include "MainView.hpp"
 #include <mfl/ColorDisplay.hpp>
-#include <tojson.hpp>
 #include <mfl/http/Client.hpp>
 #include "pinFromInt.hpp"
 #include "ProgramModes.hpp"
 #include "waitForDebugger.hpp"
 #include "displayTest.hpp"
+#include "lvglTest.hpp"
 
 #include <iostream>
 #include <esp_http_client.h>
@@ -25,6 +25,8 @@
 #include <esp_spiffs.h>
 #include <fstream>
 
+#include "tojson.hpp"
+
 const std::string HOME_ADDRESS = "http://" CONFIG_ROBERTO_HOME_ADDRESS ":3001/api/" CONFIG_ROBERTO_ID;
 const std::string ROBERTO_AP_NAME = "roberto-" CONFIG_ROBERTO_NAME;
 
@@ -33,7 +35,7 @@ const char* tag = "roberto";
 using namespace mfl;
 using namespace roberto;
 
-const ProgramMode mode = ProgramMode::displayTest;
+const ProgramMode mode = ProgramMode::lvglTest;
 
 extern "C" void app_main() {
     waitForDebugger();
@@ -130,12 +132,16 @@ extern "C" void app_main() {
         }
         case ProgramMode::displayTest: {
             ColorDisplay display(displayConfig);
-            color_display::LvglAdapter lvgl(display);
             displayTest(display);
             for (;;) {
                 ESP_LOGI("foo", "sleeping");
                 vTaskDelay(10000 / portTICK_PERIOD_MS);
             }
+        }
+        case ProgramMode::lvglTest: {
+            ColorDisplay display(displayConfig);
+            color_display::LvglAdapter lvgl(display);
+            lvglTest(lvgl);
         }
         default: {
             for (;;) {
